@@ -20,11 +20,15 @@ function handleImageClick(event) {
   for (var i = 0; i < document.getElementsByClassName('researchImage').length; i++) {
     document.getElementsByClassName('researchImage')[i].setAttribute('id', imagesOnPageNames[i]);
   }
+  // Adds to the times shown counter for all the images on the page
   for (var i = 0; i < imageObjectsOnPage.length; i++) {
     imageObjectsOnPage[i].timesShown++;
+    if (event.target.id === imageObjectsOnPage[i].name) {
+      imageObjectsOnPage[i].timesClicked++;
+    }
   }
   console.log('you clicked on: ', event.target.id);
-  console.log(imageObjectsOnPage);
+  console.log(imageObjectArray);
   imageObjectsOnPage = [];
   imagesOnPageNames = [];
   addImagesToPage();
