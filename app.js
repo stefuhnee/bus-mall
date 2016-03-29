@@ -17,6 +17,7 @@ function pushImageObjectToArray(imageObject){
 
 // Adds an ID to each image on the page, reinitializes imagesOnPage so that new images will be added to the page, adds new images to the page, and reinitializes the event handler.
 function handleImageClick(event) {
+  // Sets ID attributes of all images on page to the value of the image object's property name.
   for (var i = 0; i < document.getElementsByClassName('researchImage').length; i++) {
     document.getElementsByClassName('researchImage')[i].setAttribute('id', imagesOnPageNames[i]);
   }
@@ -53,11 +54,23 @@ function initializeEventHandler() {
 
 // Targets image classes on the HTML page and changes the src value to the filepath of the image object returned by the getRandomImage function, one at a time. Returns an array of the names of these image objects on the page in an array called imagesOnPage, so that they can later be identified. Also returns an array of the image objects so that their timesClicked properties can be accessed and incremented when clicked.
 function addImagesToPage() {
+  // Gets random image object for each img element on the page and pushes both the object itself and the object's name into separate arrays.
   for (var i = 0; i < document.getElementsByClassName('researchImage').length; i++) {
     var randomImage = getRandomImage();
-    document.getElementsByClassName('researchImage')[i].src = randomImage.filepath;
     imagesOnPageNames.push(randomImage.name);
     imageObjectsOnPage.push(randomImage);
+  }
+  // If any of the objects in the object's array match, replace the reference object with a new random object.
+  for (var i = 0; i < imageObjectsOnPage.length; i++) {
+    for (var j = 0; j < imageObjectsOnPage.length; j++) {
+      if (imageObjectsOnPage[i] === imageObjectsOnPage[j] && i !== j) {
+        imageObjectsOnPage[i] = getRandomImage();
+      }
+    }
+  }
+  // Add the appropriate filepath to the image object and update each img element's src on the page
+  for (var i = 0; i < document.getElementsByClassName('researchImage').length; i++) {
+    document.getElementsByClassName('researchImage')[i].src = imageObjectsOnPage[i].filepath;
   }
   return imagesOnPageNames, imageObjectsOnPage;
 }
