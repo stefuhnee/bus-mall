@@ -23,6 +23,7 @@ function handleImageClick(event) {
   // Adds to the times shown counter for all the images on the page
   for (var i = 0; i < imageObjectsOnPage.length; i++) {
     imageObjectsOnPage[i].timesShown++;
+    // Adds to the times clicked counter specifically for the clicked image.
     if (event.target.id === imageObjectsOnPage[i].name) {
       imageObjectsOnPage[i].timesClicked++;
     }
@@ -50,7 +51,7 @@ function initializeEventHandler() {
   }
 };
 
-// Targets img classes on the HTML page and changes the src value to the filepath of the image object returned by the getRandomImage function, one at a time. Returns an array of the names of these image objects on the page in an array called imagesOnPage, so that they can later be identified.
+// Targets image classes on the HTML page and changes the src value to the filepath of the image object returned by the getRandomImage function, one at a time. Returns an array of the names of these image objects on the page in an array called imagesOnPage, so that they can later be identified. Also returns an array of the image objects so that their timesClicked properties can be accessed and incremented when clicked.
 function addImagesToPage() {
   for (var i = 0; i < document.getElementsByClassName('researchImage').length; i++) {
     var randomImage = getRandomImage();
