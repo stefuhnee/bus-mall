@@ -1,14 +1,7 @@
 'use strict';
 
 var imageObjectArray = [];
-
-// Instantiates new image object
-function ImageObject(name, filepath, timesShown, timesClicked) {
-  this.name = name;
-  this.filepath = filepath;
-  this.timesShown = timesShown;
-  this.timesClicked = timesClicked;
-}
+var imagesOnPage = [];
 
 // Accesses the imageObjectArray and returns a random value from that array
 function getRandomImage(){
@@ -19,6 +12,40 @@ function getRandomImage(){
 // Pushes an object into the imageObjectArray
 function pushImageObjectToArray(imageObject){
   imageObjectArray.push(imageObject);
+}
+
+function handleImageClick(event) {
+  for (var i = 0; i < document.getElementsByClassName('researchImage').length; i++) {
+    var randomImageGenerated = getRandomImage();
+    document.getElementsByClassName('researchImage')[i].src = randomImageGenerated.filepath;
+    document.getElementsByClassName('researchImage')[i].setAttribute('id', randomImageGenerated.name);
+    console.log('you clicked on: ', event.target.id);
+  }
+};
+
+// Instantiates new image object
+function ImageObject(name, filepath, timesShown, timesClicked) {
+  this.name = name;
+  this.filepath = filepath;
+  this.timesShown = timesShown;
+  this.timesClicked = timesClicked;
+}
+
+function initializeEventHandler() {
+  for (var i = 0; i < document.getElementsByClassName('researchImage').length; i++) {
+    document.getElementsByClassName('researchImage')[i].addEventListener('click', handleImageClick);
+  }
+};
+
+// Targets img classes on the HTML page and changes the src value to the filepath of the image object returned by the getRandomImage function, one at a time.
+function addImagesToPage() {
+  for (var i = 0; i < document.getElementsByClassName('researchImage').length; i++) {
+    var randomImage = getRandomImage();
+    document.getElementsByClassName('researchImage')[i].src = randomImage.filepath;
+    imagesOnPage.push(randomImage.name);
+  }
+  return imagesOnPage;
+  console.log('images on page: ', imagesOnPage);
 }
 
 // Creates new object for an image and then pushes it to the imageObjectArray
@@ -43,11 +70,5 @@ pushImageObjectToArray(new ImageObject('usb', 'img/usb.gif', 0, 0));
 pushImageObjectToArray(new ImageObject('water-can', 'img/water-can.jpg', 0, 0));
 pushImageObjectToArray(new ImageObject('wine-glass', 'img/wine-glass.jpg', 0, 0));
 
-// Targets img ids on the HTML page and changes the src value to the filepath of the image object returned by the getRandomImage function.
-document.getElementById('img1').src = getRandomImage().filepath;
-document.getElementById('img2').src = getRandomImage().filepath;
-document.getElementById('img3').src = getRandomImage().filepath;
-
-// for (var i = 0; i < trackImages.length; i++) {
-//   trackImages[i].addEventListener('click', handleImageClick);
-// }
+addImagesToPage();
+initializeEventHandler();
