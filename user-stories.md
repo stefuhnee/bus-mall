@@ -7,4 +7,4 @@
 * As a market researcher, I want to utilize a testing application that won't introduce bias and will accurately measure user input.
 * As a developer, I want to keep my code as simple and clear as possible so that if other developers work on the code, it will be easy to understand.
 * As a developer, I want to meet the specifications given to me by the market researchers.
-* As a developer, I want to test my code thoroughly to make sure that it works in every possible situation and that there are no errors that will affect the research.
+* As a developer, I want to test my code thoroughly to make sure that it works in every possible situation and that there are no errors that might affect the results of the research testing.
