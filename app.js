@@ -14,13 +14,15 @@ function pushImageObjectToArray(imageObject){
   imageObjectArray.push(imageObject);
 }
 
+// Adds an ID to each image on the page, reinitializes imagesOnPage so that new images will be added to the page, adds new images to the page, and reinitializes the event handler.
 function handleImageClick(event) {
   for (var i = 0; i < document.getElementsByClassName('researchImage').length; i++) {
-    var randomImageGenerated = getRandomImage();
-    document.getElementsByClassName('researchImage')[i].src = randomImageGenerated.filepath;
-    document.getElementsByClassName('researchImage')[i].setAttribute('id', randomImageGenerated.name);
-    console.log('you clicked on: ', event.target.id);
+    document.getElementsByClassName('researchImage')[i].setAttribute('id', imagesOnPage[i]);
   }
+  console.log('you clicked on: ', event.target.id);
+  imagesOnPage = [];
+  addImagesToPage();
+  initializeEventHandler();
 };
 
 // Instantiates new image object
@@ -31,13 +33,14 @@ function ImageObject(name, filepath, timesShown, timesClicked) {
   this.timesClicked = timesClicked;
 }
 
+// Adds event listeners to each image
 function initializeEventHandler() {
   for (var i = 0; i < document.getElementsByClassName('researchImage').length; i++) {
     document.getElementsByClassName('researchImage')[i].addEventListener('click', handleImageClick);
   }
 };
 
-// Targets img classes on the HTML page and changes the src value to the filepath of the image object returned by the getRandomImage function, one at a time.
+// Targets img classes on the HTML page and changes the src value to the filepath of the image object returned by the getRandomImage function, one at a time. Returns an array of the names of these image objects on the page in an array called imagesOnPage, so that they can later be identified.
 function addImagesToPage() {
   for (var i = 0; i < document.getElementsByClassName('researchImage').length; i++) {
     var randomImage = getRandomImage();
@@ -45,7 +48,6 @@ function addImagesToPage() {
     imagesOnPage.push(randomImage.name);
   }
   return imagesOnPage;
-  console.log('images on page: ', imagesOnPage);
 }
 
 // Creates new object for an image and then pushes it to the imageObjectArray
