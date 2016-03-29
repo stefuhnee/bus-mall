@@ -1,7 +1,8 @@
 'use strict';
 
 var imageObjectArray = [];
-var imagesOnPage = [];
+var imagesOnPageNames = [];
+var imageObjectsOnPage = [];
 
 // Accesses the imageObjectArray and returns a random value from that array
 function getRandomImage(){
@@ -17,10 +18,15 @@ function pushImageObjectToArray(imageObject){
 // Adds an ID to each image on the page, reinitializes imagesOnPage so that new images will be added to the page, adds new images to the page, and reinitializes the event handler.
 function handleImageClick(event) {
   for (var i = 0; i < document.getElementsByClassName('researchImage').length; i++) {
-    document.getElementsByClassName('researchImage')[i].setAttribute('id', imagesOnPage[i]);
+    document.getElementsByClassName('researchImage')[i].setAttribute('id', imagesOnPageNames[i]);
+  }
+  for (var i = 0; i < imageObjectsOnPage.length; i++) {
+    imageObjectsOnPage[i].timesShown++;
   }
   console.log('you clicked on: ', event.target.id);
-  imagesOnPage = [];
+  console.log(imageObjectsOnPage);
+  imageObjectsOnPage = [];
+  imagesOnPageNames = [];
   addImagesToPage();
   initializeEventHandler();
 };
@@ -45,9 +51,10 @@ function addImagesToPage() {
   for (var i = 0; i < document.getElementsByClassName('researchImage').length; i++) {
     var randomImage = getRandomImage();
     document.getElementsByClassName('researchImage')[i].src = randomImage.filepath;
-    imagesOnPage.push(randomImage.name);
+    imagesOnPageNames.push(randomImage.name);
+    imageObjectsOnPage.push(randomImage);
   }
-  return imagesOnPage;
+  return imagesOnPageNames, imageObjectsOnPage;
 }
 
 // Creates new object for an image and then pushes it to the imageObjectArray
