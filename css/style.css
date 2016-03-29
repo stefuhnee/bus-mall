@@ -1,0 +1,15 @@
+body {
+  width: 1000px;
+  margin: 0 auto;
+}
+
+main {
+  margin-top: 50px;
+  height: 600px;
+  width: 1000px;
+  background-color: red;
+}
+
+img {
+  display: inline;
+}
