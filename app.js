@@ -29,22 +29,24 @@ pushImageObjectToArray(new ImageObject('boots', 'img/boots.jpg', 0, 0));
 pushImageObjectToArray(new ImageObject('breakfast', 'img/breakfast.jpg', 0, 0));
 pushImageObjectToArray(new ImageObject('bubblegum', 'img/bubblegum.jpg', 0, 0));
 pushImageObjectToArray(new ImageObject('chair', 'img/chair.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('cthulhu', 'img/cthulu.jpg', 0, 0));
+pushImageObjectToArray(new ImageObject('cthulhu', 'img/cthulhu.jpg', 0, 0));
 pushImageObjectToArray(new ImageObject('dog-duck', 'img/dog-duck.jpg', 0, 0));
 pushImageObjectToArray(new ImageObject('dragon', 'img/dragon.jpg', 0, 0));
 pushImageObjectToArray(new ImageObject('pen', 'img/pen.jpg', 0, 0));
 pushImageObjectToArray(new ImageObject('pet-sweep', 'img/pet-sweep.jpg', 0, 0));
 pushImageObjectToArray(new ImageObject('scissors', 'img/scissors.jpg', 0, 0));
 pushImageObjectToArray(new ImageObject('shark', 'img/shark.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('sweep', 'img/sweep.jpg', 0, 0));
+pushImageObjectToArray(new ImageObject('sweep', 'img/sweep.png', 0, 0));
 pushImageObjectToArray(new ImageObject('tauntaun', 'img/tauntaun.jpg', 0, 0));
 pushImageObjectToArray(new ImageObject('unicorn', 'img/unicorn.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('usb', 'img/usb.jpg', 0, 0));
+pushImageObjectToArray(new ImageObject('usb', 'img/usb.gif', 0, 0));
 pushImageObjectToArray(new ImageObject('water-can', 'img/water-can.jpg', 0, 0));
 pushImageObjectToArray(new ImageObject('wine-glass', 'img/wine-glass.jpg', 0, 0));
 
+// Targets img ids on the HTML page and changes the src value to the filepath of the image object returned by the getRandomImage function.
 document.getElementById('img1').src = getRandomImage().filepath;
-
+document.getElementById('img2').src = getRandomImage().filepath;
+document.getElementById('img3').src = getRandomImage().filepath;
 
 // for (var i = 0; i < trackImages.length; i++) {
 //   trackImages[i].addEventListener('click', handleImageClick);
