@@ -1,7 +1,7 @@
 'use strict';
 
 var imageObjectArray = [];
-var imagesOnPageNames = [];
+var imageNamesOnPage = [];
 var imageObjectsOnPage = [];
 
 // Accesses the imageObjectArray and returns a random value from that array
@@ -19,34 +19,24 @@ function pushImageObjectToArray(imageObject){
 function handleImageClick(event) {
   // Sets ID attributes of all images on page to the value of the image object's property name.
   for (var i = 0; i < document.getElementsByClassName('researchImage').length; i++) {
-    document.getElementsByClassName('researchImage')[i].setAttribute('id', imagesOnPageNames[i]);
+    document.getElementsByClassName('researchImage')[i].setAttribute('id', imageNamesOnPage[i]);
   }
-  // Adds to the times shown counter for all the images on the page
+  // Adds to the timesShown counter property for all the images on the page
   for (var i = 0; i < imageObjectsOnPage.length; i++) {
     imageObjectsOnPage[i].timesShown++;
-    // Adds to the times clicked counter specifically for the clicked image.
+    // Adds to the timesClicked counter property specifically for the clicked image.
     if (event.target.id === imageObjectsOnPage[i].name) {
       imageObjectsOnPage[i].timesClicked++;
     }
   }
-  console.log('you clicked on: ', event.target.id);
-  console.log(imageObjectArray);
   imageObjectsOnPage = [];
-  imagesOnPageNames = [];
+  imageNamesOnPage = [];
   addImagesToPage();
-  initializeEventHandler();
+  initializeEventListener();
 };
 
-// Instantiates new image object
-function ImageObject(name, filepath, timesShown, timesClicked) {
-  this.name = name;
-  this.filepath = filepath;
-  this.timesShown = timesShown;
-  this.timesClicked = timesClicked;
-}
-
 // Adds event listeners to each image
-function initializeEventHandler() {
+function initializeEventListener() {
   for (var i = 0; i < document.getElementsByClassName('researchImage').length; i++) {
     document.getElementsByClassName('researchImage')[i].addEventListener('click', handleImageClick);
   }
@@ -57,7 +47,7 @@ function addImagesToPage() {
   // Gets random image object for each img element on the page and pushes both the object itself and the object's name into separate arrays.
   for (var i = 0; i < document.getElementsByClassName('researchImage').length; i++) {
     var randomImage = getRandomImage();
-    imagesOnPageNames.push(randomImage.name);
+    imageNamesOnPage.push(randomImage.name);
     imageObjectsOnPage.push(randomImage);
   }
   // If any of the objects in the object's array match, replace the reference object with a new random object.
@@ -72,30 +62,38 @@ function addImagesToPage() {
   for (var i = 0; i < document.getElementsByClassName('researchImage').length; i++) {
     document.getElementsByClassName('researchImage')[i].src = imageObjectsOnPage[i].filepath;
   }
-  return imagesOnPageNames, imageObjectsOnPage;
+  return imageNamesOnPage, imageObjectsOnPage;
+}
+
+// Instantiates new image object
+function ImageObject(name, filepath) {
+  this.name = name;
+  this.filepath = filepath;
+  this.timesShown = 0;
+  this.timesClicked = 0;
 }
 
 // Creates new object for an image and then pushes it to the imageObjectArray
-pushImageObjectToArray(new ImageObject('bag', 'img/bag.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('banana', 'img/banana.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('bathroom', 'img/bathroom.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('boots', 'img/boots.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('breakfast', 'img/breakfast.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('bubblegum', 'img/bubblegum.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('chair', 'img/chair.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('cthulhu', 'img/cthulhu.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('dog-duck', 'img/dog-duck.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('dragon', 'img/dragon.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('pen', 'img/pen.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('pet-sweep', 'img/pet-sweep.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('scissors', 'img/scissors.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('shark', 'img/shark.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('sweep', 'img/sweep.png', 0, 0));
-pushImageObjectToArray(new ImageObject('tauntaun', 'img/tauntaun.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('unicorn', 'img/unicorn.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('usb', 'img/usb.gif', 0, 0));
-pushImageObjectToArray(new ImageObject('water-can', 'img/water-can.jpg', 0, 0));
-pushImageObjectToArray(new ImageObject('wine-glass', 'img/wine-glass.jpg', 0, 0));
+pushImageObjectToArray(new ImageObject('bag', 'img/bag.jpg'));
+pushImageObjectToArray(new ImageObject('banana', 'img/banana.jpg'));
+pushImageObjectToArray(new ImageObject('bathroom', 'img/bathroom.jpg'));
+pushImageObjectToArray(new ImageObject('boots', 'img/boots.jpg'));
+pushImageObjectToArray(new ImageObject('breakfast', 'img/breakfast.jpg'));
+pushImageObjectToArray(new ImageObject('bubblegum', 'img/bubblegum.jpg'));
+pushImageObjectToArray(new ImageObject('chair', 'img/chair.jpg'));
+pushImageObjectToArray(new ImageObject('cthulhu', 'img/cthulhu.jpg'));
+pushImageObjectToArray(new ImageObject('dog-duck', 'img/dog-duck.jpg'));
+pushImageObjectToArray(new ImageObject('dragon', 'img/dragon.jpg'));
+pushImageObjectToArray(new ImageObject('pen', 'img/pen.jpg'));
+pushImageObjectToArray(new ImageObject('pet-sweep', 'img/pet-sweep.jpg'));
+pushImageObjectToArray(new ImageObject('scissors', 'img/scissors.jpg'));
+pushImageObjectToArray(new ImageObject('shark', 'img/shark.jpg'));
+pushImageObjectToArray(new ImageObject('sweep', 'img/sweep.png'));
+pushImageObjectToArray(new ImageObject('tauntaun', 'img/tauntaun.jpg'));
+pushImageObjectToArray(new ImageObject('unicorn', 'img/unicorn.jpg'));
+pushImageObjectToArray(new ImageObject('usb', 'img/usb.gif'));
+pushImageObjectToArray(new ImageObject('water-can', 'img/water-can.jpg'));
+pushImageObjectToArray(new ImageObject('wine-glass', 'img/wine-glass.jpg'));
 
 addImagesToPage();
-initializeEventHandler();
+initializeEventListener();
