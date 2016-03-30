@@ -4,18 +4,11 @@ var imageObjectArray = [];
 var imageNamesOnPage = [];
 var imageObjectsOnPage = [];
 var totalNumOfClicks = 0;
-var currentObject = {};
-var canvasChart = document.createElement('canvas');
-var mainSection = document.getElementById('canvas-chart');
-var canvasContext = canvasChart.getContext('2d');
+// var chartData = {};
+var data = {};
 var allImageNames = [];
 var allTimesClicked = [];
 var allTimesShown = [];
-
-// Pushes an object into the imageObjectArray
-function pushImageObjectToArray(imageObject){
-  imageObjectArray.push(imageObject);
-}
 
 // Accesses the imageObjectArray and returns a random value from that array
 function getRandomImage(){
@@ -23,47 +16,39 @@ function getRandomImage(){
   return randomImage;
 }
 
-function initializeChartInfo() {
+// generates arrays of data to be used in the canvas chart
+function getDataArrays(){
   for (var i = 0; i < imageObjectArray.length; i++) {
     allImageNames.push(imageObjectArray[i].name);
     allTimesClicked.push(imageObjectArray[i].timesClicked);
     allTimesShown.push(imageObjectArray[i].timesShown);
-  }
-  var chartData = {
+  };
+  return allImageNames, allTimesClicked, allTimesShown;
+}
+
+// Creates arrays with all of the relevant info to create chart (object names, times clicked, and times shown), creates datasets for chart, creates chart, and appends chart to page.
+function initializeChartData() {
+  var data = {
     labels: allImageNames,
-    objectData: [
+    datasets: [
       {
         label: 'Times Clicked',
         fillColor: 'rgba(220,220,220,0.5)',
         highlightFill: 'rgba(220,220,220,0.75)',
-        highlightStroke: 'rgba(220,220,220,1)',
-        timesClicked: allTimesClicked
+        highlightStroke: '#000000',
+        data: allTimesClicked
       },
       {
         label: 'Times Shown',
         fillColor: 'rgba(220,220,220,0.5)',
         highlightFill: 'rgba(220,220,220,0.75)',
-        highlightStroke: 'rgba(220,220,220,1)',
-        timesShown: allTimesShown
+        highlightStroke: '#000000',
+        data: allTimesShown
       }
     ]
   };
-  var chartOptions = {
-    scaleBeginAtZero : true,
-    scaleShowGridLines : true,
-    scaleGridLineColor : 'rgba(0,0,0,.05)',
-    scaleGridLineWidth : 1,
-    scaleShowHorizontalLines: true,
-    scaleShowVerticalLines: true,
-    barShowStroke : true,
-    barStrokeWidth : 2,
-    barValueSpacing : 5,
-    barDatasetSpacing : 1,
-  };
-  var createCanvasChart = new Chart(canvasContext).Bar(chartData, chartOptions);
-  canvasChart.style.width = '800px';
-  canvasChart.style.height = '400px';
-  mainSection.appendChild(canvasChart);
+  var ctx = document.getElementById('canvasChart').getContext('2d');
+  var createCanvasChart = new Chart(ctx).Bar(data);
 };
 
 // Adds an ID to each image on the page, reinitializes imagesOnPage so that new images will be added to the page, adds new images to the page, and reinitializes the event handler.
@@ -84,9 +69,9 @@ function handleImageClick(event) {
   imageNamesOnPage = [];
   totalNumOfClicks++;
   if (totalNumOfClicks === 5) {
-    initializeChartInfo();
+    getDataArrays();
     console.log('All image names: ', allImageNames + ' All times clicked: ', allTimesClicked + ' All times shown: ', allTimesShown);
-
+    initializeChartData();
   } else {
     addImagesToPage();
     initializeEventListener();
@@ -123,35 +108,36 @@ function addImagesToPage() {
   return imageNamesOnPage, imageObjectsOnPage;
 }
 
-// Instantiates new image object
+// Instantiates new image object and pushes it to the imageObjectArray.
 function ImageObject(name, filepath) {
   this.name = name;
   this.filepath = filepath;
   this.timesShown = 0;
   this.timesClicked = 0;
+  imageObjectArray.push(this);
 }
 
-// Creates new object for an image and then pushes it to the imageObjectArray
-pushImageObjectToArray(new ImageObject('bag', 'img/bag.jpg'));
-pushImageObjectToArray(new ImageObject('banana', 'img/banana.jpg'));
-pushImageObjectToArray(new ImageObject('bathroom', 'img/bathroom.jpg'));
-pushImageObjectToArray(new ImageObject('boots', 'img/boots.jpg'));
-pushImageObjectToArray(new ImageObject('breakfast', 'img/breakfast.jpg'));
-pushImageObjectToArray(new ImageObject('bubblegum', 'img/bubblegum.jpg'));
-pushImageObjectToArray(new ImageObject('chair', 'img/chair.jpg'));
-pushImageObjectToArray(new ImageObject('cthulhu', 'img/cthulhu.jpg'));
-pushImageObjectToArray(new ImageObject('dog-duck', 'img/dog-duck.jpg'));
-pushImageObjectToArray(new ImageObject('dragon', 'img/dragon.jpg'));
-pushImageObjectToArray(new ImageObject('pen', 'img/pen.jpg'));
-pushImageObjectToArray(new ImageObject('pet-sweep', 'img/pet-sweep.jpg'));
-pushImageObjectToArray(new ImageObject('scissors', 'img/scissors.jpg'));
-pushImageObjectToArray(new ImageObject('shark', 'img/shark.jpg'));
-pushImageObjectToArray(new ImageObject('sweep', 'img/sweep.png'));
-pushImageObjectToArray(new ImageObject('tauntaun', 'img/tauntaun.jpg'));
-pushImageObjectToArray(new ImageObject('unicorn', 'img/unicorn.jpg'));
-pushImageObjectToArray(new ImageObject('usb', 'img/usb.gif'));
-pushImageObjectToArray(new ImageObject('water-can', 'img/water-can.jpg'));
-pushImageObjectToArray(new ImageObject('wine-glass', 'img/wine-glass.jpg'));
+// Creates new object for each image
+var bagImage = new ImageObject('bag', 'img/bag.jpg');
+var bananaImage = new ImageObject('banana', 'img/banana.jpg');
+var bathroomImage = new ImageObject('bathroom', 'img/bathroom.jpg');
+var bootsImage = new ImageObject('boots', 'img/boots.jpg');
+var breakfastImage = new ImageObject('breakfast', 'img/breakfast.jpg');
+var bubblegumImage = new ImageObject('bubblegum', 'img/bubblegum.jpg');
+var chairImage = new ImageObject('chair', 'img/chair.jpg');
+var cthuluImage = new ImageObject('cthulhu', 'img/cthulhu.jpg');
+var dogDuckImage = new ImageObject('dog-duck', 'img/dog-duck.jpg');
+var dragonImage = new ImageObject('dragon', 'img/dragon.jpg');
+var penImage = new ImageObject('pen', 'img/pen.jpg');
+var petSweepImage = new ImageObject('pet-sweep', 'img/pet-sweep.jpg');
+var scissorsImage = new ImageObject('scissors', 'img/scissors.jpg');
+var sharkImage = new ImageObject('shark', 'img/shark.jpg');
+var sweepImage = new ImageObject('sweep', 'img/sweep.png');
+var tauntaunImage = new ImageObject('tauntaun', 'img/tauntaun.jpg');
+var unicornImage = new ImageObject('unicorn', 'img/unicorn.jpg');
+var usbImage = new ImageObject('usb', 'img/usb.gif');
+var waterCanImage = new ImageObject('water-can', 'img/water-can.jpg');
+var wineGlassImage = new ImageObject('wine-glass', 'img/wine-glass.jpg');
 
 addImagesToPage();
 initializeEventListener();
