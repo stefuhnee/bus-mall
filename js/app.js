@@ -100,9 +100,22 @@ pushImageObjectToArray(new ImageObject('wine-glass', 'img/wine-glass.jpg'));
 addImagesToPage();
 initializeEventListener();
 
-// Add canvas element to the page
+// Create, style, and add canvas element to the page and get context.
 var canvasChart = document.createElement('canvas');
 canvasChart.style.width = '500px';
 canvasChart.style.height = '500px';
 var mainSection = document.getElementById('canvas-chart');
 mainSection.appendChild(canvasChart);
+var canvasContext = canvasChart.getContext('2d');
+
+// Instantiates new chart object
+function createChartObject(data) {
+  this.data = data;
+  this.displayOptions = displayOptions;
+}
+
+var resultsOfStudyChart = new Chart(canvasContext).Bar(data, displayOptions);
+
+var displayOptions = {
+  barShowStroke = true;
+}
