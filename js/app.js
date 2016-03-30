@@ -7,6 +7,8 @@ var totalNumOfClicks = 0;
 var allImageNames = [];
 var allTimesClicked = [];
 var allTimesShown = [];
+var data = {};
+var resultsOfStudyChart;
 
 // Accesses the imageObjectArray and returns a random value from that array
 function getRandomImage(){
@@ -28,29 +30,22 @@ function handleImageClick(event) {
   // Adds to the timesShown counter property for all the images on the page
   for (var i = 0; i < imageObjectsOnPage.length; i++) {
     imageObjectsOnPage[i].timesShown++;
-    // Matches the images shown on the page to the corresponding object by referencing the name property. Increments the number referring to timesShown for the object's specific index in the allTimesShown array so that it correctly renders to the canvas chart.
-    for (var j = 0; j < allImageNames.length; j++) {
-      if (imageObjectsOnPage[i].name === allImageNames[j]) {
-        allTimesShown[j]++;
-      }
-    }
     // Adds to the timesClicked counter property specifically for the clicked image.
     if (event.target.id === imageObjectsOnPage[i].name) {
       imageObjectsOnPage[i].timesClicked++;
-      // Matches the image clicked to the corresponding object by referencing the name property. Increments the number referring to timesClicked for the object's specific index in the allTimesClicked array so that it correctly renders to the canvas chart.
-      for (var j = 0; j < allImageNames.length; j++) {
-        if (imageObjectsOnPage[i].name === allImageNames[j]) {
-          allTimesClicked[j]++;
-        }
-      }
     }
   }
   imageObjectsOnPage = [];
   imageNamesOnPage = [];
   totalNumOfClicks++;
-  addImagesToPage();
-  initializeEventListener();
-  console.log('All image names: ', allImageNames + ' All times clicked: ', allTimesClicked + ' All times shown: ', allTimesShown);
+  if (totalNumOfClicks === 25) {
+    initializeChartInfo();
+    console.log('All image names: ', allImageNames + ' All times clicked: ', allTimesClicked + ' All times shown: ', allTimesShown);
+
+  } else {
+    addImagesToPage();
+    initializeEventListener();
+  }
 };
 
 // Adds event listeners to each image. Must be called after addImagesToPage because addImagesToPage needs to switch out images if there are matching images within ImageObjectsOnPage.
@@ -115,7 +110,6 @@ pushImageObjectToArray(new ImageObject('wine-glass', 'img/wine-glass.jpg'));
 
 addImagesToPage();
 initializeEventListener();
-initializeChartInfo();
 
 // Create, style, and add canvas element to the page and get context.
 var canvasChart = document.createElement('canvas');
@@ -130,8 +124,6 @@ var canvasContext = canvasChart.getContext('2d');
 //   this.data = data;
 // };
 
-// var resultsOfStudyChart = new Chart(canvasContext).Bar(data);
-
 // Get array of image names, times clicked, and times shown for canvas chart labels
 function initializeChartInfo() {
   for (var i = 0; i < imageObjectArray.length; i++) {
@@ -139,9 +131,18 @@ function initializeChartInfo() {
     allTimesClicked.push(imageObjectArray[i].timesClicked);
     allTimesShown.push(imageObjectArray[i].timesShown);
   }
+  data = {
+    labels: allImageNames,
+    datasets: [
+      {
+        label: 'Times Clicked',
+        data: allTimesClicked
+      },
+      {
+        label: 'Times Shown',
+        data: allTimesShown
+      }
+    ]
+  };
+  var resultsOfStudyChart = new Chart(canvasContext).Bar(data);
 }
-
-//
-// var data = {
-//   labels: imageObjectArray
-// };
