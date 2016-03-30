@@ -35,7 +35,7 @@ function handleImageClick(event) {
   initializeEventListener();
 };
 
-// Adds event listeners to each image
+// Adds event listeners to each image. Must be called after addImagesToPage because addImagesToPage needs to switch out images if there are matching images within ImageObjectsOnPage.
 function initializeEventListener() {
   for (var i = 0; i < document.getElementsByClassName('researchImage').length; i++) {
     document.getElementsByClassName('researchImage')[i].addEventListener('click', handleImageClick);
@@ -50,7 +50,7 @@ function addImagesToPage() {
     imageNamesOnPage.push(randomImage.name);
     imageObjectsOnPage.push(randomImage);
   }
-  // If any of the objects in the object's array match, replace the reference object with a new random object.
+  // If any of the objects in the imageObjectsOnPage array match (if two images are the same on the page), replace the reference object with a new random object.
   for (var i = 0; i < imageObjectsOnPage.length; i++) {
     for (var j = 0; j < imageObjectsOnPage.length; j++) {
       if (imageObjectsOnPage[i] === imageObjectsOnPage[j] && i !== j) {
