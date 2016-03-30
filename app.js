@@ -99,3 +99,10 @@ pushImageObjectToArray(new ImageObject('wine-glass', 'img/wine-glass.jpg'));
 
 addImagesToPage();
 initializeEventListener();
+
+// Add canvas element to the page
+var canvasChart = document.createElement('canvas');
+canvasChart.style.width = '500px';
+canvasChart.style.height = '500px';
+var mainSection = document.getElementById('canvas-chart');
+mainSection.appendChild(canvasChart);
