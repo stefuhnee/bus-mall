@@ -8,6 +8,9 @@ var currentObject = {};
 var canvasChart = document.createElement('canvas');
 var mainSection = document.getElementById('canvas-chart');
 var canvasContext = canvasChart.getContext('2d');
+var allImageNames = ['wat'];
+var allTimesClicked = [2];
+var allTimesShown = [3];
 
 // Pushes an object into the imageObjectArray
 function pushImageObjectToArray(imageObject){
@@ -21,12 +24,21 @@ function getRandomImage(){
 }
 
 function initializeChartInfo() {
-  var createCanvasChart = new AllChartData();
-  for (var i = 0; i < imageObjectArray.length; i++) {
-    var currentObject = new ChartObjectData('imageObjectArray[i].name', imageObjectArray[i].timesClicked, imageObjectArray[i].timesShown);
-    createCanvasChart.pushData(currentObject);
-  }
-  createCanvasChart.renderToCanvas(canvasContext);
+  var chartData = {
+    labels: allImageNames,
+    objectData: [
+      {
+        label: 'Times Clicked',
+        timesClicked : allTimesClicked
+      },
+      {
+        label: 'Times Shown',
+        timesShown: allTimesShown
+      }
+    ]
+  };
+  var createCanvasChart = new Chart(canvasContext).Bar(chartData);
+  mainSection.appendChild(canvasChart);
 };
 
 // Adds an ID to each image on the page, reinitializes imagesOnPage so that new images will be added to the page, adds new images to the page, and reinitializes the event handler.
@@ -94,25 +106,6 @@ function ImageObject(name, filepath) {
   this.timesClicked = 0;
 }
 
-function AllChartData() {
-  this.allChartData = [];
-}
-
-// Instantiates new data object to add to the canvas chart
-function ChartObjectData(imageLabel, allTimesClicked, allTimesShown) {
-  this.imageLabel = imageLabel;
-  this.allTimesClicked = allTimesClicked;
-  this.allTimesShown = allTimesShown;
-}
-
-AllChartData.prototype.pushData = function(chartData){
-  this.allChartData.push(chartData);
-};
-
-AllChartData.prototype.renderToCanvas = function(canvasContext) {
-  new Chart(canvasContext).Bar(this.allChartData);
-};
-
 // Creates new object for an image and then pushes it to the imageObjectArray
 pushImageObjectToArray(new ImageObject('bag', 'img/bag.jpg'));
 pushImageObjectToArray(new ImageObject('banana', 'img/banana.jpg'));
@@ -137,8 +130,5 @@ pushImageObjectToArray(new ImageObject('wine-glass', 'img/wine-glass.jpg'));
 
 addImagesToPage();
 initializeEventListener();
-
-// Create, style, and add canvas element to the page and get context.
 canvasChart.style.width = '500px';
 canvasChart.style.height = '500px';
-mainSection.appendChild(canvasChart);
