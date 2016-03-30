@@ -13,5 +13,6 @@ main {
 
 img {
   display: inline;
+  /* Specificially for the gif that I couldn't manually resize in Photoshop without losing animation */
   height: 240px;
 }

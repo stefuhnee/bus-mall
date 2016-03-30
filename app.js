@@ -3,6 +3,7 @@
 var imageObjectArray = [];
 var imageNamesOnPage = [];
 var imageObjectsOnPage = [];
+var totalNumOfClicks = 0;
 
 // Accesses the imageObjectArray and returns a random value from that array
 function getRandomImage(){
@@ -31,6 +32,7 @@ function handleImageClick(event) {
   }
   imageObjectsOnPage = [];
   imageNamesOnPage = [];
+  totalNumOfClicks++;
   addImagesToPage();
   initializeEventListener();
 };
