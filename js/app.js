@@ -8,9 +8,9 @@ var currentObject = {};
 var canvasChart = document.createElement('canvas');
 var mainSection = document.getElementById('canvas-chart');
 var canvasContext = canvasChart.getContext('2d');
-var allImageNames = ['wat'];
-var allTimesClicked = [2];
-var allTimesShown = [3];
+var allImageNames = [];
+var allTimesClicked = [];
+var allTimesShown = [];
 
 // Pushes an object into the imageObjectArray
 function pushImageObjectToArray(imageObject){
@@ -24,20 +24,45 @@ function getRandomImage(){
 }
 
 function initializeChartInfo() {
+  for (var i = 0; i < imageObjectArray.length; i++) {
+    allImageNames.push(imageObjectArray[i].name);
+    allTimesClicked.push(imageObjectArray[i].timesClicked);
+    allTimesShown.push(imageObjectArray[i].timesShown);
+  }
   var chartData = {
     labels: allImageNames,
     objectData: [
       {
         label: 'Times Clicked',
-        timesClicked : allTimesClicked
+        fillColor: 'rgba(220,220,220,0.5)',
+        highlightFill: 'rgba(220,220,220,0.75)',
+        highlightStroke: 'rgba(220,220,220,1)',
+        timesClicked: allTimesClicked
       },
       {
         label: 'Times Shown',
+        fillColor: 'rgba(220,220,220,0.5)',
+        highlightFill: 'rgba(220,220,220,0.75)',
+        highlightStroke: 'rgba(220,220,220,1)',
         timesShown: allTimesShown
       }
     ]
   };
-  var createCanvasChart = new Chart(canvasContext).Bar(chartData);
+  var chartOptions = {
+    scaleBeginAtZero : true,
+    scaleShowGridLines : true,
+    scaleGridLineColor : 'rgba(0,0,0,.05)',
+    scaleGridLineWidth : 1,
+    scaleShowHorizontalLines: true,
+    scaleShowVerticalLines: true,
+    barShowStroke : true,
+    barStrokeWidth : 2,
+    barValueSpacing : 5,
+    barDatasetSpacing : 1,
+  };
+  var createCanvasChart = new Chart(canvasContext).Bar(chartData, chartOptions);
+  canvasChart.style.width = '800px';
+  canvasChart.style.height = '400px';
   mainSection.appendChild(canvasChart);
 };
 
@@ -58,7 +83,7 @@ function handleImageClick(event) {
   imageObjectsOnPage = [];
   imageNamesOnPage = [];
   totalNumOfClicks++;
-  if (totalNumOfClicks === 1) {
+  if (totalNumOfClicks === 5) {
     initializeChartInfo();
     console.log('All image names: ', allImageNames + ' All times clicked: ', allTimesClicked + ' All times shown: ', allTimesShown);
 
@@ -130,5 +155,3 @@ pushImageObjectToArray(new ImageObject('wine-glass', 'img/wine-glass.jpg'));
 
 addImagesToPage();
 initializeEventListener();
-canvasChart.style.width = '500px';
-canvasChart.style.height = '500px';

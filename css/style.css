@@ -26,4 +26,6 @@ img {
 canvas {
   outline: 1px solid red;
   margin: 0 auto;
+  height: 500px;
+  width: 500px;
 }
