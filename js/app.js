@@ -139,18 +139,18 @@ function ImageObject(name, filepath) {
 }
 
 // creates new data set object for use in canvas chart.
-function CreateDataSet(information, fillColor, highlightStroke, displayData) {
+function CreateDataSet(information, fillColor, highlightFill, displayData) {
   this.label = information;
   this.fillColor = fillColor;
   this.strokeColor = '#000';
-  this.highlightFill = '#F7B2FF';
-  this.highlightStroke = highlightStroke;
+  this.highlightFill = highlightFill;
+  this.highlightStroke = '#000';
   this.data = displayData;
 };
 
 // creates data set for canvas chart.
-var timesClickedDataSet = new CreateDataSet('Times Clicked', '#66B220', 'F7B2FF', allTimesClicked);
-var timesShownDataSet = new CreateDataSet('Times Shown', '#AA59B2', 'rgba(220,220,220,1)', allTimesShown);
+var timesClickedDataSet = new CreateDataSet('Times Clicked', '#66B220', '#F7B2FF', allTimesClicked);
+var timesShownDataSet = new CreateDataSet('Times Shown', '#AA59B2', '#ff7a7a', allTimesShown);
 
 // Creates new object for each image
 var bagImage = new ImageObject('bag', 'img/bag.jpg');
