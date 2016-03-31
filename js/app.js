@@ -11,6 +11,7 @@ var allTimesShown = [];
 var datasets = [];
 var ctx;
 var createCanvasChart;
+var voteMoreTimesButton = false;
 
 // Accesses the imageObjectArray and returns a random value from that array
 function getRandomImage(){
@@ -42,6 +43,10 @@ function initializeChartData() {
 // Adds an ID to each image on the page, reinitializes imagesOnPage so that new images will be added to the page, adds new images to the page, and reinitializes the event handler.
 function handleImageClick(event) {
   // Sets ID attributes of all images on page to the value of the image object's property name.
+  if (voteMoreTimesButton) {
+    totalNumOfClicks = 15;
+    buttonSection.innerHTML = '';
+  }
   for (var i = 0; i < document.getElementsByClassName('research-image').length; i++) {
     document.getElementsByClassName('research-image')[i].setAttribute('id', imageNamesOnPage[i]);
   }
@@ -60,7 +65,7 @@ function handleImageClick(event) {
   if (totalNumOfClicks === 25) {
     getDataArrays();
     console.log('All image names: ', allImageNames + ' All times clicked: ', allTimesClicked + ' All times shown: ', allTimesShown);
-    initializeChartData();
+    addButtons();
   } else {
     addImagesToPage();
     initializeEventListener();
@@ -109,7 +114,7 @@ function ImageObject(name, filepath) {
 function CreateDataSet(information, fillColor, highlightFill, highlightStroke, displayData) {
   this.label = information;
   this.fillColor = fillColor;
-  this.strokeColor = "rgba(220,220,220,0.8)";
+  this.strokeColor = 'rgba(220,220,220,0.8)';
   this.highlightFill = highlightFill;
   this.highlightStroke = highlightStroke;
   this.data = displayData;
@@ -150,3 +155,17 @@ var wineGlassImage = new ImageObject('wine-glass', 'img/wine-glass.jpg');
 
 addImagesToPage();
 initializeEventListener();
+
+function addButtons() {
+  var buttonSection = document.getElementById('userForm');
+  var viewResultsButton = document.createElement('button');
+  var voteMoreTimesButton = document.createElement('button');
+  buttonSection.appendChild(viewResultsButton);
+  buttonSection.appendChild(voteMoreTimesButton);
+  viewResultsButton.textContent = 'View Results';
+  voteMoreTimesButton.textContent = 'Vote 10 More Times';
+  viewResultsButton.type = 'submit';
+  voteMoreTimesButton.type = 'submit';
+  viewResultsButton.addEventListener('click', initializeChartData);
+  voteMoreTimesButton.addEventListener('click', handleImageClick());
+}
