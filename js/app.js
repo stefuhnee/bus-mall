@@ -82,6 +82,7 @@ function handleImageClick(event) {
     initializeEventListener();
   }
   else if ((totalNumOfClicks === 25) || ((totalNumOfClicks + 5) % 10 === 0)) {
+    allImageNames = [];
     addImagesToPage();
     addButtons();
   } else {
@@ -152,9 +153,9 @@ function ImageObject(name, filepath) {
 function CreateDataSet(information, fillColor, highlightFill, displayData) {
   this.label = information;
   this.fillColor = fillColor;
-  this.strokeColor = '#000';
+  this.strokeColor = 'rgba(0,0,0,0)';
   this.highlightFill = highlightFill;
-  this.highlightStroke = '#000';
+  this.highlightStroke = 'rgba(0,0,0,0)';
   this.data = displayData;
 };
 
