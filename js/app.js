@@ -15,6 +15,11 @@ var canvasChartEl;
 var buttonSection = document.getElementById('user-form');
 var imageSection = document.getElementById('image-section');
 var canvasSection = document.getElementById('canvas-section');
+var clickingHistory = {
+  allTimesClicked: allTimesClicked,
+  allTimesShown: allTimesShown,
+  totalNumOfClicks: totalNumOfClicks
+};
 
 // Accesses the imageObjectArray and returns a random value from that array
 function getRandomImage(){
@@ -27,7 +32,10 @@ function getDataArrays(){
   for (var i = 0; i < imageObjectArray.length; i++) {
     allImageNames.push(imageObjectArray[i].name);
     allTimesClicked.push(imageObjectArray[i].timesClicked);
+    clickingHistory.allTimesClicked = allTimesClicked;
     allTimesShown.push(imageObjectArray[i].timesShown);
+    clickingHistory.allTimesShown = allTimesShown;
+    console.log('storage object ', clickingHistory);
   };
 };
 
@@ -68,6 +76,7 @@ function handleImageClick(event) {
   imageNamesOnPage = [];
   totalNumOfClicks++;
   console.log('total number of clicks: ', totalNumOfClicks);
+  localStorage.setItem('clickingHistory', JSON.stringify(clickingHistory));
   if (totalNumOfClicks < 25) {
     addImagesToPage();
     initializeEventListener();
