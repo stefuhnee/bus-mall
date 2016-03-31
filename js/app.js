@@ -11,6 +11,7 @@ var allTimesShown = [];
 var datasets = [];
 var ctx;
 var createCanvasChart;
+var canvasChartEl;
 var buttonSection = document.getElementById('user-form');
 var imageSection = document.getElementById('image-section');
 var canvasSection = document.getElementById('canvas-section');
@@ -37,7 +38,11 @@ function initializeChartData() {
     labels: allImageNames,
     datasets: [timesClickedDataSet, timesShownDataSet]
   };
-  var ctx = document.getElementById('canvas-chart').getContext('2d');
+  var canvasChartEl = document.createElement('canvas');
+  canvasChartEl.setAttribute('width', '800');
+  canvasChartEl.setAttribute('height', '500');
+  canvasSection.appendChild(canvasChartEl);
+  var ctx = canvasChartEl.getContext('2d');
   var createCanvasChart = new Chart(ctx).Bar(data);
 };
 
@@ -116,11 +121,9 @@ function addButtons() {
   voteMoreTimesButton.type = 'submit';
   viewResultsButton.addEventListener('click', initializeChartData);
   voteMoreTimesButton.addEventListener('click', initializeEventListener);
+  // Makes images unclickable when buttons come up
   for (var i = 0; i < document.getElementsByClassName('research-image').length; i++) {
     document.getElementsByClassName('research-image')[i].removeEventListener('click', handleImageClick, false);
-  }
-  if ((totalNumOfClicks === 25) || ((totalNumOfClicks + 5) % 10 === 0)) {
-    setTimeout(addImagesToPage(), 10);
   }
 }
 
