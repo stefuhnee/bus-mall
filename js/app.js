@@ -15,11 +15,8 @@ var canvasChartEl;
 var buttonSection = document.getElementById('user-form');
 var imageSection = document.getElementById('image-section');
 var canvasSection = document.getElementById('canvas-section');
-// var clickingHistory = {
-//   allTimesClicked: allTimesClicked,
-//   allTimesShown: allTimesShown,
-//   totalNumOfClicks: totalNumOfClicks
-// };
+var clickingHistory = {};
+var newClickingHistory = {};
 
 // Accesses the imageObjectArray and returns a random value from that array
 function getRandomImage(){
@@ -33,7 +30,6 @@ function getDataArrays(){
     allImageNames.push(imageObjectArray[i].name);
     allTimesClicked.push(imageObjectArray[i].timesClicked);
     allTimesShown.push(imageObjectArray[i].timesShown);
-    console.log('storage object ', clickingHistory);
   };
 };
 
@@ -67,14 +63,31 @@ function handleImageClick(event) {
     // Adds to the timesClicked counter property specifically for the clicked image.
     if (event.target.id === imageObjectsOnPage[i].name) {
       imageObjectsOnPage[i].timesClicked++;
-      break;
     }
   }
   imageObjectsOnPage = [];
   imageNamesOnPage = [];
   totalNumOfClicks++;
   console.log('total number of clicks: ', totalNumOfClicks);
-  localStorage.setItem('clickingHistory', JSON.stringify(imageObjectArray));
+  // Store clicking data for every object in local storage. First time user visits page, uses data from the array of image objects.
+  var clickingHistory = JSON.parse(localStorage.getItem('clickingHistory'));
+  if (clickingHistory && totalNumOfClicks === 0) {
+    newClickingHistory = clickingHistory;
+    updateLocalStorage();
+  } else if (newClickingHistory) {
+    newClickingHistory = clickingHistory;
+    for (var i = 0; i < imageObjectsOnPage.length; i++) {
+      newClickingHistory[i].timesShown++;
+      if (event.target.id === imageObjectsOnPage[i].name) {
+        newClickingHistory[i].timesClicked++;
+      };
+      break;
+    };
+    updateLocalStorage();
+  } else {
+    localStorage.setItem('clickingHistory', JSON.stringify(imageObjectArray));
+    // localStorage.setItem('totalNumOfClicks', JSON.stringify(totalNumOfClicks));
+  }
   if (totalNumOfClicks < 25) {
     addImagesToPage();
     initializeEventListener();
@@ -135,6 +148,17 @@ function addButtons() {
     document.getElementsByClassName('research-image')[i].removeEventListener('click', handleImageClick, false);
   }
 }
+
+// Adds values of properties from current image object array to those stored in local storage from the last session.
+function updateLocalStorage() {
+  if (clickingHistory && totalNumOfClicks === 0) {
+    for (var i = 0; i < imageObjectArray.length; i++) {
+      newClickingHistory[i].timesShown += imageObjectArray[i].timesShown;
+      newClickingHistory[i].timesClicked += imageObjectArray[i].timesClicked;
+    }
+  }
+  localStorage.setItem('clickingHistory', JSON.stringify(newClickingHistory));
+};
 
 // Instantiates new image object and pushes it to the imageObjectArray.
 function ImageObject(name, filepath) {
