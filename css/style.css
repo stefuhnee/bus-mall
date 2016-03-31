@@ -4,7 +4,6 @@ body {
 }
 
 main {
-  padding-top: 50px;
   height: 400px;
   width: 1200px;
   margin: 0 auto;
@@ -17,12 +16,4 @@ img {
   height: 240px;
 }
 
-/*#canvas-chart {
-  width: 1200px;
-  height: 800px;
-  text-align: center;
-}
-
-canvas {
-  margin: 0 auto;
-}*/
+canvas

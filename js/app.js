@@ -39,11 +39,14 @@ function initializeChartData() {
     datasets: [timesClickedDataSet, timesShownDataSet]
   };
   var canvasChartEl = document.createElement('canvas');
-  canvasChartEl.setAttribute('width', '800');
+  canvasChartEl.setAttribute('width', '1000');
   canvasChartEl.setAttribute('height', '500');
   canvasSection.appendChild(canvasChartEl);
   var ctx = canvasChartEl.getContext('2d');
   var createCanvasChart = new Chart(ctx).Bar(data);
+  console.log('Data that should be displayed: ');
+  console.log('Times Clicked: ', allTimesClicked);
+  console.log('Times Shown: ', allTimesShown);
 };
 
 // Adds an ID to each image on the page, reinitializes imagesOnPage so that new images will be added to the page, adds new images to the page, and reinitializes the event handler.
@@ -72,9 +75,7 @@ function handleImageClick(event) {
   else if ((totalNumOfClicks === 25) || ((totalNumOfClicks + 5) % 10 === 0)) {
     addImagesToPage();
     addButtons();
-    getDataArrays();
-  }
-  else {
+  } else {
     buttonSection.innerHTML = '';
     addImagesToPage();
     initializeEventListener();
@@ -121,6 +122,7 @@ function addButtons() {
   voteMoreTimesButton.type = 'submit';
   viewResultsButton.addEventListener('click', initializeChartData);
   voteMoreTimesButton.addEventListener('click', initializeEventListener);
+  getDataArrays();
   // Makes images unclickable when buttons come up
   for (var i = 0; i < document.getElementsByClassName('research-image').length; i++) {
     document.getElementsByClassName('research-image')[i].removeEventListener('click', handleImageClick, false);
@@ -137,18 +139,18 @@ function ImageObject(name, filepath) {
 }
 
 // creates new data set object for use in canvas chart.
-function CreateDataSet(information, fillColor, highlightFill, highlightStroke, displayData) {
+function CreateDataSet(information, fillColor, highlightStroke, displayData) {
   this.label = information;
   this.fillColor = fillColor;
-  this.strokeColor = 'rgba(220,220,220,0.8)';
-  this.highlightFill = highlightFill;
+  this.strokeColor = '#000';
+  this.highlightFill = '#F7B2FF';
   this.highlightStroke = highlightStroke;
   this.data = displayData;
 };
 
 // creates data set for canvas chart.
-var timesClickedDataSet = new CreateDataSet('Times Clicked', 'rgba(220,220,220,0.5)', 'rgba(220,220,220,0.75)', 'rgba(220,220,220,1)', allTimesClicked);
-var timesShownDataSet = new CreateDataSet('Times Shown', 'rgba(220,220,220,0.5)', 'rgba(220,220,220,0.75)', 'rgba(220,220,220,1)', allTimesShown);
+var timesClickedDataSet = new CreateDataSet('Times Clicked', '#66B220', 'F7B2FF', allTimesClicked);
+var timesShownDataSet = new CreateDataSet('Times Shown', '#AA59B2', 'rgba(220,220,220,1)', allTimesShown);
 
 // Creates new object for each image
 var bagImage = new ImageObject('bag', 'img/bag.jpg');
