@@ -11,7 +11,8 @@ var allTimesShown = [];
 var datasets = [];
 var ctx;
 var createCanvasChart;
-var voteMoreTimesButton = false;
+var buttonSection = document.getElementById('userForm');
+var extraClicks = 0;
 
 // Accesses the imageObjectArray and returns a random value from that array
 function getRandomImage(){
@@ -30,12 +31,11 @@ function getDataArrays(){
 
 // Creates arrays with all of the relevant info to create chart (object names, times clicked, and times shown), creates datasets for chart, creates chart, and appends chart to page.
 function initializeChartData() {
+  buttonSection.innerHTML = '';
   var data = {
     labels: allImageNames,
     datasets: [timesClickedDataSet, timesShownDataSet]
   };
-
-  console.table(data.datasets);
   var ctx = document.getElementById('canvas-chart').getContext('2d');
   var createCanvasChart = new Chart(ctx).Bar(data);
 };
@@ -43,10 +43,6 @@ function initializeChartData() {
 // Adds an ID to each image on the page, reinitializes imagesOnPage so that new images will be added to the page, adds new images to the page, and reinitializes the event handler.
 function handleImageClick(event) {
   // Sets ID attributes of all images on page to the value of the image object's property name.
-  if (voteMoreTimesButton) {
-    totalNumOfClicks = 15;
-    buttonSection.innerHTML = '';
-  }
   for (var i = 0; i < document.getElementsByClassName('research-image').length; i++) {
     document.getElementsByClassName('research-image')[i].setAttribute('id', imageNamesOnPage[i]);
   }
@@ -62,13 +58,26 @@ function handleImageClick(event) {
   imageObjectsOnPage = [];
   imageNamesOnPage = [];
   totalNumOfClicks++;
-  if (totalNumOfClicks === 25) {
-    getDataArrays();
-    console.log('All image names: ', allImageNames + ' All times clicked: ', allTimesClicked + ' All times shown: ', allTimesShown);
-    addButtons();
-  } else {
+  console.log('total number of clicks: ', totalNumOfClicks);
+  if (totalNumOfClicks < 25) {
     addImagesToPage();
     initializeEventListener();
+    extraClicks++;
+  }
+  else if (totalNumOfClicks === 25) {
+    addButtons();
+    getDataArrays();
+    extraClicks = 0;
+  }
+  else {
+    buttonSection.innerHTML = '';
+    addImagesToPage();
+    initializeEventListener();
+    console.log('extra clicks: ', extraClicks);
+    if (extraClicks === 10) {
+      extraClicks = 0;
+      addButtons();
+    }
   }
 };
 
@@ -99,6 +108,22 @@ function addImagesToPage() {
   for (var i = 0; i < document.getElementsByClassName('research-image').length; i++) {
     document.getElementsByClassName('research-image')[i].src = imageObjectsOnPage[i].filepath;
   }
+  if (totalNumOfClicks === 26 || extraClicks === 11) {
+    extraClicks = 0;
+  }
+}
+
+function addButtons() {
+  var viewResultsButton = document.createElement('button');
+  var voteMoreTimesButton = document.createElement('button');
+  buttonSection.appendChild(viewResultsButton);
+  buttonSection.appendChild(voteMoreTimesButton);
+  viewResultsButton.textContent = 'View Results';
+  voteMoreTimesButton.textContent = 'Vote 10 More Times';
+  viewResultsButton.type = 'submit';
+  voteMoreTimesButton.type = 'submit';
+  viewResultsButton.addEventListener('click', initializeChartData);
+  voteMoreTimesButton.addEventListener('click', handleImageClick);
 }
 
 // Instantiates new image object and pushes it to the imageObjectArray.
@@ -119,13 +144,6 @@ function CreateDataSet(information, fillColor, highlightFill, highlightStroke, d
   this.highlightStroke = highlightStroke;
   this.data = displayData;
 };
-
-// label: "My First dataset",
-// fillColor: "rgba(220,220,220,0.5)",
-// strokeColor: "rgba(220,220,220,0.8)",
-// highlightFill: "rgba(220,220,220,0.75)",
-// highlightStroke: "rgba(220,220,220,1)",
-// data: [65, 59, 80, 81, 56, 55, 40]
 
 // creates data set for canvas chart.
 var timesClickedDataSet = new CreateDataSet('Times Clicked', 'rgba(220,220,220,0.5)', 'rgba(220,220,220,0.75)', 'rgba(220,220,220,1)', allTimesClicked);
@@ -155,17 +173,3 @@ var wineGlassImage = new ImageObject('wine-glass', 'img/wine-glass.jpg');
 
 addImagesToPage();
 initializeEventListener();
-
-function addButtons() {
-  var buttonSection = document.getElementById('userForm');
-  var viewResultsButton = document.createElement('button');
-  var voteMoreTimesButton = document.createElement('button');
-  buttonSection.appendChild(viewResultsButton);
-  buttonSection.appendChild(voteMoreTimesButton);
-  viewResultsButton.textContent = 'View Results';
-  voteMoreTimesButton.textContent = 'Vote 10 More Times';
-  viewResultsButton.type = 'submit';
-  voteMoreTimesButton.type = 'submit';
-  viewResultsButton.addEventListener('click', initializeChartData);
-  voteMoreTimesButton.addEventListener('click', handleImageClick());
-}
