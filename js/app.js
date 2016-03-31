@@ -4,7 +4,6 @@ var imageObjectArray = [];
 var imageNamesOnPage = [];
 var imageObjectsOnPage = [];
 var totalNumOfClicks = 0;
-// var chartData = {};
 var data = {};
 var allImageNames = [];
 var allTimesClicked = [];
@@ -34,6 +33,7 @@ function initializeChartData() {
     labels: allImageNames,
     datasets: [timesClickedDataSet, timesShownDataSet]
   };
+
   console.table(data.datasets);
   var ctx = document.getElementById('canvas-chart').getContext('2d');
   var createCanvasChart = new Chart(ctx).Bar(data);
@@ -57,7 +57,7 @@ function handleImageClick(event) {
   imageObjectsOnPage = [];
   imageNamesOnPage = [];
   totalNumOfClicks++;
-  if (totalNumOfClicks === 5) {
+  if (totalNumOfClicks === 25) {
     getDataArrays();
     console.log('All image names: ', allImageNames + ' All times clicked: ', allTimesClicked + ' All times shown: ', allTimesShown);
     initializeChartData();
@@ -94,7 +94,6 @@ function addImagesToPage() {
   for (var i = 0; i < document.getElementsByClassName('research-image').length; i++) {
     document.getElementsByClassName('research-image')[i].src = imageObjectsOnPage[i].filepath;
   }
-  return imageNamesOnPage, imageObjectsOnPage;
 }
 
 // Instantiates new image object and pushes it to the imageObjectArray.
@@ -106,15 +105,24 @@ function ImageObject(name, filepath) {
   imageObjectArray.push(this);
 }
 
-// creates new data set object for use in canvas graph
+// creates new data set object for use in canvas chart.
 function CreateDataSet(information, fillColor, highlightFill, highlightStroke, displayData) {
-  this.information = information;
+  this.label = information;
   this.fillColor = fillColor;
+  this.strokeColor = "rgba(220,220,220,0.8)";
   this.highlightFill = highlightFill;
   this.highlightStroke = highlightStroke;
-  this.displayData = displayData;
+  this.data = displayData;
 };
 
+// label: "My First dataset",
+// fillColor: "rgba(220,220,220,0.5)",
+// strokeColor: "rgba(220,220,220,0.8)",
+// highlightFill: "rgba(220,220,220,0.75)",
+// highlightStroke: "rgba(220,220,220,1)",
+// data: [65, 59, 80, 81, 56, 55, 40]
+
+// creates data set for canvas chart.
 var timesClickedDataSet = new CreateDataSet('Times Clicked', 'rgba(220,220,220,0.5)', 'rgba(220,220,220,0.75)', 'rgba(220,220,220,1)', allTimesClicked);
 var timesShownDataSet = new CreateDataSet('Times Shown', 'rgba(220,220,220,0.5)', 'rgba(220,220,220,0.75)', 'rgba(220,220,220,1)', allTimesShown);
 
