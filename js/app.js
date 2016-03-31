@@ -15,8 +15,24 @@ var canvasChartEl;
 var buttonSection = document.getElementById('user-form');
 var imageSection = document.getElementById('image-section');
 var canvasSection = document.getElementById('canvas-section');
-var clickingHistory = {};
-var newClickingHistory = {};
+var storedImageData = loadImageObjectData();
+var storedNumClicks = loadClickData();
+
+function saveClickData() {
+  localStorage.setItem('totalClicks', JSON.stringify(totalNumOfClicks));
+}
+
+function loadClickData() {
+  return JSON.parse(localStorage.getItem('totalClicks'));
+}
+
+function saveImageObjectData() {
+  localStorage.setItem('objectData', JSON.stringify(imageObjectArray));
+}
+
+function loadImageObjectData() {
+  return JSON.parse(localStorage.getItem('objectData'));
+}
 
 // Accesses the imageObjectArray and returns a random value from that array
 function getRandomImage(){
@@ -69,30 +85,11 @@ function handleImageClick(event) {
   imageNamesOnPage = [];
   totalNumOfClicks++;
   console.log('total number of clicks: ', totalNumOfClicks);
-  // Store clicking data for every object in local storage. First time user visits page, uses data from the array of image objects.
-  var clickingHistory = JSON.parse(localStorage.getItem('clickingHistory'));
-  if (clickingHistory && totalNumOfClicks === 0) {
-    newClickingHistory = clickingHistory;
-    updateLocalStorage();
-  } else if (newClickingHistory) {
-    newClickingHistory = clickingHistory;
-    for (var i = 0; i < imageObjectsOnPage.length; i++) {
-      newClickingHistory[i].timesShown++;
-      if (event.target.id === imageObjectsOnPage[i].name) {
-        newClickingHistory[i].timesClicked++;
-      };
-      break;
-    };
-    updateLocalStorage();
-  } else {
-    localStorage.setItem('clickingHistory', JSON.stringify(imageObjectArray));
-    // localStorage.setItem('totalNumOfClicks', JSON.stringify(totalNumOfClicks));
-  }
+
   if (totalNumOfClicks < 25) {
     addImagesToPage();
     initializeEventListener();
-  }
-  else if ((totalNumOfClicks === 25) || ((totalNumOfClicks + 5) % 10 === 0)) {
+  } else if ((totalNumOfClicks === 25) || ((totalNumOfClicks + 5) % 10 === 0)) {
     addImagesToPage();
     addButtons();
   } else {
@@ -100,6 +97,8 @@ function handleImageClick(event) {
     addImagesToPage();
     initializeEventListener();
   }
+  saveImageObjectData();
+  saveClickData();
 };
 
 // Adds event listeners to each image. Must be called after addImagesToPage because addImagesToPage needs to switch out images if there are matching images within ImageObjectsOnPage.
@@ -149,17 +148,6 @@ function addButtons() {
   }
 }
 
-// Adds values of properties from current image object array to those stored in local storage from the last session.
-function updateLocalStorage() {
-  if (clickingHistory && totalNumOfClicks === 0) {
-    for (var i = 0; i < imageObjectArray.length; i++) {
-      newClickingHistory[i].timesShown += imageObjectArray[i].timesShown;
-      newClickingHistory[i].timesClicked += imageObjectArray[i].timesClicked;
-    }
-  }
-  localStorage.setItem('clickingHistory', JSON.stringify(newClickingHistory));
-};
-
 // Instantiates new image object and pushes it to the imageObjectArray.
 function ImageObject(name, filepath) {
   this.name = name;
@@ -183,27 +171,37 @@ function CreateDataSet(information, fillColor, highlightFill, displayData) {
 var timesClickedDataSet = new CreateDataSet('Times Clicked', '#66B220', '#F7B2FF', allTimesClicked);
 var timesShownDataSet = new CreateDataSet('Times Shown', '#AA59B2', '#ff7a7a', allTimesShown);
 
-// Creates new object for each image
-var bagImage = new ImageObject('bag', 'img/bag.jpg');
-var bananaImage = new ImageObject('banana', 'img/banana.jpg');
-var bathroomImage = new ImageObject('bathroom', 'img/bathroom.jpg');
-var bootsImage = new ImageObject('boots', 'img/boots.jpg');
-var breakfastImage = new ImageObject('breakfast', 'img/breakfast.jpg');
-var bubblegumImage = new ImageObject('bubblegum', 'img/bubblegum.jpg');
-var chairImage = new ImageObject('chair', 'img/chair.jpg');
-var cthuluImage = new ImageObject('cthulhu', 'img/cthulhu.jpg');
-var dogDuckImage = new ImageObject('dog-duck', 'img/dog-duck.jpg');
-var dragonImage = new ImageObject('dragon', 'img/dragon.jpg');
-var penImage = new ImageObject('pen', 'img/pen.jpg');
-var petSweepImage = new ImageObject('pet-sweep', 'img/pet-sweep.jpg');
-var scissorsImage = new ImageObject('scissors', 'img/scissors.jpg');
-var sharkImage = new ImageObject('shark', 'img/shark.jpg');
-var sweepImage = new ImageObject('sweep', 'img/sweep.png');
-var tauntaunImage = new ImageObject('tauntaun', 'img/tauntaun.jpg');
-var unicornImage = new ImageObject('unicorn', 'img/unicorn.jpg');
-var usbImage = new ImageObject('usb', 'img/usb.gif');
-var waterCanImage = new ImageObject('water-can', 'img/water-can.jpg');
-var wineGlassImage = new ImageObject('wine-glass', 'img/wine-glass.jpg');
+// if there is imageObject array in localstorage, use it, else run these constructors
+if (storedImageData) {
+  imageObjectArray = storedImageData;
+} else {
+  // Creates new object for each image
+  new ImageObject('bag', 'img/bag.jpg');
+  new ImageObject('banana', 'img/banana.jpg');
+  new ImageObject('bathroom', 'img/bathroom.jpg');
+  new ImageObject('boots', 'img/boots.jpg');
+  new ImageObject('breakfast', 'img/breakfast.jpg');
+  new ImageObject('bubblegum', 'img/bubblegum.jpg');
+  new ImageObject('chair', 'img/chair.jpg');
+  new ImageObject('cthulhu', 'img/cthulhu.jpg');
+  new ImageObject('dog-duck', 'img/dog-duck.jpg');
+  new ImageObject('dragon', 'img/dragon.jpg');
+  new ImageObject('pen', 'img/pen.jpg');
+  new ImageObject('pet-sweep', 'img/pet-sweep.jpg');
+  new ImageObject('scissors', 'img/scissors.jpg');
+  new ImageObject('shark', 'img/shark.jpg');
+  new ImageObject('sweep', 'img/sweep.png');
+  new ImageObject('tauntaun', 'img/tauntaun.jpg');
+  new ImageObject('unicorn', 'img/unicorn.jpg');
+  new ImageObject('usb', 'img/usb.gif');
+  new ImageObject('water-can', 'img/water-can.jpg');
+  new ImageObject('wine-glass', 'img/wine-glass.jpg');
+}
+
+// If storedNumClicks exists in local storage, replace totalNumOfClicks with storeNumClicks.
+if (storedNumClicks) {
+  totalNumOfClicks = storedNumClicks;
+}
 
 addImagesToPage();
 initializeEventListener();
