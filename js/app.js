@@ -198,7 +198,7 @@ if (storedImageData) {
   new ImageObject('wine-glass', 'img/wine-glass.jpg');
 }
 
-// If storedNumClicks exists in local storage, replace totalNumOfClicks with storeNumClicks.
+// If storedNumClicks exists in local storage, replace totalNumOfClicks with storedNumClicks.
 if (storedNumClicks) {
   totalNumOfClicks = storedNumClicks;
 }
