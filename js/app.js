@@ -43,7 +43,7 @@ function initializeChartData() {
   buttonSection.innerHTML = '';
   var data = {
     labels: allImageNames,
-    datasets: [timesClickedDataSet, timesShownDataSet, percentTimesClicked]
+    datasets: [timesClickedDataSet, timesShownDataSet, percentTimesClickedDataSet]
   };
   var canvasChartEl = document.createElement('canvas');
   canvasChartEl.setAttribute('width', '1000');
