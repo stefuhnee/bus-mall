@@ -13,6 +13,7 @@ var ctx;
 var createCanvasChart;
 var buttonSection = document.getElementById('user-form');
 var imageSection = document.getElementById('image-section');
+var canvasSection = document.getElementById('canvas-section');
 
 // Accesses the imageObjectArray and returns a random value from that array
 function getRandomImage(){
@@ -115,6 +116,12 @@ function addButtons() {
   voteMoreTimesButton.type = 'submit';
   viewResultsButton.addEventListener('click', initializeChartData);
   voteMoreTimesButton.addEventListener('click', initializeEventListener);
+  for (var i = 0; i < document.getElementsByClassName('research-image').length; i++) {
+    document.getElementsByClassName('research-image')[i].removeEventListener('click', handleImageClick, false);
+  }
+  if ((totalNumOfClicks === 25) || ((totalNumOfClicks + 5) % 10 === 0)) {
+    setTimeout(addImagesToPage(), 10);
+  }
 }
 
 // Instantiates new image object and pushes it to the imageObjectArray.
