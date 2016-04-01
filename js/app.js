@@ -8,6 +8,7 @@ var data = {};
 var allImageNames = [];
 var allTimesClicked = [];
 var allTimesShown = [];
+var percentTimesClicked = [];
 var datasets = [];
 var ctx;
 var createCanvasChart;
@@ -46,6 +47,11 @@ function getDataArrays(){
     allImageNames.push(imageObjectArray[i].name);
     allTimesClicked.push(imageObjectArray[i].timesClicked);
     allTimesShown.push(imageObjectArray[i].timesShown);
+    if (typeof(imageObjectArray[i].percentClicked) !== 'number') {
+      percentTimesClicked.push(0);
+    }
+    else { percentTimesClicked.push(imageObjectArray[i].percentClicked);
+    }
   };
 };
 
@@ -54,7 +60,7 @@ function initializeChartData() {
   buttonSection.innerHTML = '';
   var data = {
     labels: allImageNames,
-    datasets: [timesClickedDataSet, timesShownDataSet]
+    datasets: [timesClickedDataSet, timesShownDataSet, percentTimesClickedDataSet]
   };
   var canvasChartEl = document.createElement('canvas');
   canvasChartEl.setAttribute('width', '1000');
@@ -65,6 +71,7 @@ function initializeChartData() {
   console.log('Data that should be displayed: ');
   console.log('Times Clicked: ', allTimesClicked);
   console.log('Times Shown: ', allTimesShown);
+  console.log('Percentage Clicked: ', percentTimesClicked);
 };
 
 // Adds an ID to each image on the page, reinitializes imagesOnPage so that new images will be added to the page, adds new images to the page, and reinitializes the event handler.
@@ -80,7 +87,9 @@ function handleImageClick(event) {
     if (event.target.id === imageObjectsOnPage[i].name) {
       imageObjectsOnPage[i].timesClicked++;
     }
+    imageObjectsOnPage[i].percentClicked = imageObjectsOnPage[i].timesClicked / imageObjectsOnPage[i].timesShown;
   }
+  allImageNames = [];
   imageObjectsOnPage = [];
   imageNamesOnPage = [];
   totalNumOfClicks++;
@@ -154,6 +163,7 @@ function ImageObject(name, filepath) {
   this.filepath = filepath;
   this.timesShown = 0;
   this.timesClicked = 0;
+  this.percentClicked = 0;
   imageObjectArray.push(this);
 }
 
@@ -161,15 +171,16 @@ function ImageObject(name, filepath) {
 function CreateDataSet(information, fillColor, highlightFill, displayData) {
   this.label = information;
   this.fillColor = fillColor;
-  this.strokeColor = '#000';
+  this.strokeColor = 'rgba(0, 0, 0, 0)';
   this.highlightFill = highlightFill;
-  this.highlightStroke = '#000';
+  this.highlightStroke = 'rgba(0, 0, 0, 0)';
   this.data = displayData;
 };
 
 // creates data set for canvas chart.
 var timesClickedDataSet = new CreateDataSet('Times Clicked', '#66B220', '#F7B2FF', allTimesClicked);
 var timesShownDataSet = new CreateDataSet('Times Shown', '#AA59B2', '#ff7a7a', allTimesShown);
+var percentTimesClickedDataSet = new CreateDataSet('Percent Clicked', '#D7FFB2', '#E4FFCC', percentTimesClicked);
 
 // if there is imageObject array in localstorage, use it, else run these constructors
 if (storedImageData) {
