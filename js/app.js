@@ -77,8 +77,9 @@ function initializeChartData() {
 // Adds an ID to each image on the page, reinitializes imagesOnPage so that new images will be added to the page, adds new images to the page, and reinitializes the event handler.
 function handleImageClick(event) {
   // Sets ID attributes of all images on page to the value of the image object's property name.
-  for (var i = 0; i < document.getElementsByClassName('research-image').length; i++) {
-    document.getElementsByClassName('research-image')[i].setAttribute('id', imageNamesOnPage[i]);
+  var researchImage = document.getElementsByClassName('research-image');
+  for (var i = 0; i < researchImage.length; i++) {
+    researchImage[i].setAttribute('id', imageNamesOnPage[i]);
   }
   // Adds to the timesShown counter property for all the images on the page
   for (var i = 0; i < imageObjectsOnPage.length; i++) {
