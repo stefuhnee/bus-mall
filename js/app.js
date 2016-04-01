@@ -21,6 +21,12 @@ var flexSection = document.getElementById('flex-container');
 var storedImageData = loadImageObjectData();
 var storedNumClicks = loadClickData();
 
+function updateSrc() {
+  for (var i = 0; i < researchImage.length; i++) {
+    researchImage[i].src = imageObjectsOnPage[i].filepath;
+  }
+}
+
 function saveClickData() {
   localStorage.setItem('totalClicks', JSON.stringify(totalNumOfClicks));
 }
@@ -78,7 +84,6 @@ function initializeChartData() {
 
 // Adds an ID to each image on the page, reinitializes imagesOnPage so that new images will be added to the page, adds new images to the page, and reinitializes the event handler.
 function handleImageClick(event) {
-  flexSection.setAttribute('class', 'animated slideOutLeft');
   // Sets ID attributes of all images on page to the value of the image object's property name.
   for (var i = 0; i < researchImage.length; i++) {
     researchImage[i].setAttribute('id', imageNamesOnPage[i]);
@@ -97,7 +102,6 @@ function handleImageClick(event) {
   imageNamesOnPage = [];
   totalNumOfClicks++;
   console.log('total number of clicks: ', totalNumOfClicks);
-  setTimeout("flexSection.setAttribute('class', 'animated slideInRight')", 200);
 
   if (totalNumOfClicks < 25) {
     addImagesToPage();
@@ -123,9 +127,6 @@ function initializeEventListener() {
 
 // Targets image classes on the HTML page and changes the src values. Returns an array of the names of these image objects on the page. Also returns an array of the image objects so that their timesClicked properties can be accessed and incremented when clicked.
 function addImagesToPage() {
-  if (!researchImage[1].id) {
-    flexSection.setAttribute('class', 'animated slideInRight');
-  }
   // Gets random image object for each img element on the page and pushes both the object itself and the object's name into separate arrays.
   for (var i = 0; i < researchImage.length; i++) {
     var randomImage = getRandomImage();
@@ -141,9 +142,7 @@ function addImagesToPage() {
     }
   }
   // Add the appropriate filepath to the image object and update each img element's src on the page
-  for (var i = 0; i < researchImage.length; i++) {
-    researchImage[i].src = imageObjectsOnPage[i].filepath;
-  }
+  updateSrc();
 }
 
 function addButtons() {
