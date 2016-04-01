@@ -18,7 +18,6 @@ var buttonSection = document.getElementById('user-form');
 var imageSection = document.getElementById('image-section');
 var canvasSection = document.getElementById('canvas-section');
 var flexSection = document.getElementById('flex-container');
-var classAtt = document.createAttribute('class', 'slideInRight');
 var storedImageData = loadImageObjectData();
 var storedNumClicks = loadClickData();
 
@@ -98,6 +97,7 @@ function handleImageClick(event) {
   imageNamesOnPage = [];
   totalNumOfClicks++;
   console.log('total number of clicks: ', totalNumOfClicks);
+  setTimeout("flexSection.setAttribute('class', 'animated slideInRight')", 200);
 
   if (totalNumOfClicks < 25) {
     addImagesToPage();
