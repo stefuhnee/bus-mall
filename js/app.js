@@ -13,9 +13,12 @@ var datasets = [];
 var ctx;
 var createCanvasChart;
 var canvasChartEl;
+var researchImage = document.getElementsByClassName('research-image');
 var buttonSection = document.getElementById('user-form');
 var imageSection = document.getElementById('image-section');
 var canvasSection = document.getElementById('canvas-section');
+var flexSection = document.getElementById('flex-container');
+var classAtt = document.createAttribute('class', 'slideInRight');
 var storedImageData = loadImageObjectData();
 var storedNumClicks = loadClickData();
 
@@ -76,8 +79,8 @@ function initializeChartData() {
 
 // Adds an ID to each image on the page, reinitializes imagesOnPage so that new images will be added to the page, adds new images to the page, and reinitializes the event handler.
 function handleImageClick(event) {
+  flexSection.setAttribute('class', 'animated slideOutLeft');
   // Sets ID attributes of all images on page to the value of the image object's property name.
-  var researchImage = document.getElementsByClassName('research-image');
   for (var i = 0; i < researchImage.length; i++) {
     researchImage[i].setAttribute('id', imageNamesOnPage[i]);
   }
@@ -113,15 +116,18 @@ function handleImageClick(event) {
 
 // Adds event listeners to each image. Must be called after addImagesToPage because addImagesToPage needs to switch out images if there are matching images within ImageObjectsOnPage.
 function initializeEventListener() {
-  for (var i = 0; i < document.getElementsByClassName('research-image').length; i++) {
-    document.getElementsByClassName('research-image')[i].addEventListener('click', handleImageClick);
+  for (var i = 0; i < researchImage.length; i++) {
+    researchImage[i].addEventListener('click', handleImageClick);
   }
 };
 
 // Targets image classes on the HTML page and changes the src values. Returns an array of the names of these image objects on the page. Also returns an array of the image objects so that their timesClicked properties can be accessed and incremented when clicked.
 function addImagesToPage() {
+  if (!researchImage[1].id) {
+    flexSection.setAttribute('class', 'animated slideInRight');
+  }
   // Gets random image object for each img element on the page and pushes both the object itself and the object's name into separate arrays.
-  for (var i = 0; i < document.getElementsByClassName('research-image').length; i++) {
+  for (var i = 0; i < researchImage.length; i++) {
     var randomImage = getRandomImage();
     imageNamesOnPage.push(randomImage.name);
     imageObjectsOnPage.push(randomImage);
@@ -135,8 +141,8 @@ function addImagesToPage() {
     }
   }
   // Add the appropriate filepath to the image object and update each img element's src on the page
-  for (var i = 0; i < document.getElementsByClassName('research-image').length; i++) {
-    document.getElementsByClassName('research-image')[i].src = imageObjectsOnPage[i].filepath;
+  for (var i = 0; i < researchImage.length; i++) {
+    researchImage[i].src = imageObjectsOnPage[i].filepath;
   }
 }
 
@@ -153,8 +159,8 @@ function addButtons() {
   voteMoreTimesButton.addEventListener('click', initializeEventListener);
   getDataArrays();
   // Makes images unclickable when buttons come up
-  for (var i = 0; i < document.getElementsByClassName('research-image').length; i++) {
-    document.getElementsByClassName('research-image')[i].removeEventListener('click', handleImageClick, false);
+  for (var i = 0; i < researchImage.length; i++) {
+    researchImage[i].removeEventListener('click', handleImageClick, false);
   }
 }
 

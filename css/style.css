@@ -2,6 +2,7 @@ body {
   width: 1300px;
   margin: 0 auto;
   position: absolute;
+  background-color: #3F6066;
 }
 
 main {
@@ -14,14 +15,25 @@ main {
 h1 {
   font-family: 'Oxygen';
   display: block;
+  color: #D9D0C8;
+  text-shadow: 1px 1px 0 black;
 }
 
 img {
   /* Specificially for the gif that I couldn't manually resize in Photoshop without losing animation */
   height: 240px;
   /*flex-grow: 1;*/
-  border: 2px solid black;
-  opacity: .4;
+  opacity: .5;
+}
+
+button {
+  background-color: #06404B;
+  color: #D9D0C8;
+  margin: 5px;
+}
+
+button:hover {
+  background-color: #6E5E50;
 }
 
 img:hover {
@@ -29,9 +41,10 @@ img:hover {
   z-index: 500;
   justify-content: space-around;
   opacity: 1;
+  box-shadow: 1px 1px 3px black;
 }
 
-.flex-container {
+#flex-container {
   padding-top: 10px;
   display: flex;
   width: 1000px;
@@ -42,6 +55,11 @@ img:hover {
 .image-section {
   position: relative;
   margin: 0 auto;
+}
+
+#canvas-section {
+  margin-top: 40px;
+  background-color: #fff;
 }
 
 #user-form {
