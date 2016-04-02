@@ -151,7 +151,7 @@ function addButtons() {
   buttonSection.appendChild(viewResultsButton);
   buttonSection.appendChild(voteMoreTimesButton);
   viewResultsButton.textContent = 'View Results';
-  voteMoreTimesButton.textContent = 'Vote 10 More Times';
+  voteMoreTimesButton.textContent = 'Continue Voting';
   viewResultsButton.type = 'submit';
   voteMoreTimesButton.type = 'submit';
   viewResultsButton.addEventListener('click', initializeChartData);
